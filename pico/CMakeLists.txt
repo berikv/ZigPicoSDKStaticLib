@@ -49,4 +49,6 @@ target_link_libraries(hello_world
     pico_stdlib
 )
 
+pico_enable_stdio_usb(hello_world 1)
+
 pico_add_extra_outputs(hello_world)

@@ -1,2 +1,2 @@
 
-extern uint32_t fourtyTwo();
+extern uint32_t helloFrom();

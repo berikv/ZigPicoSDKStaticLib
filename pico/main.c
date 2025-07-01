@@ -3,11 +3,14 @@
 #include "my_module.h"
 #include <stdbool.h>
 
-
 int main() {
     stdio_init_all();
-    printf("Hello, world!\n");
-    fourtyTwo();
+
+    while (true) {
+        char *from = (char *)helloFrom();
+        printf("Hello from %s!\n", from);
+        sleep_ms(1000);
+    }
 
     return 0;
 }

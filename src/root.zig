@@ -1,3 +1,5 @@
-pub export fn fourtyTwo() u32 {
-    return 42;
+const zig = "Zig";
+
+pub export fn helloFrom() usize {
+    return @intFromPtr(zig);
 }
