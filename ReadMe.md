@@ -1,5 +1,5 @@
 
-# A Zig static library demo for the Raspberry Pi Pico SDK
+# A Zig static library for a Raspberry Pi Pico SDK project
 
 A minimal Zig static-library and Pico SDK example showing how to call into Zig from C on a Cortex-M0+ microcontroller.
 
@@ -29,7 +29,7 @@ printf("Hello from %s!\n", from);
 
 The [pico](pico/) folder contains a minimal [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk) project whose [CMakeLists.txt](pico/CMakeLists.txt) does the following:
 
-1. Builds the zig standard library:
+1. Builds the zig static library:
 
     ```bash
     zig build -Dtarget=thumb-freestanding-eabi -Dcpu=cortex_m0plus
@@ -74,5 +74,8 @@ Now the pico will print the message "Hello from Zig!" on the USB serial port.
 
 ### Monitor
 
-Use a serial port tool such as Arduino's serial monitor or the VSCode Teleport plugin monitor the usb serial port.
+Use a serial port tool such as Arduino's serial monitor or the VSCode Teleport plugin monitor.
+
+While the flashed pico is connected via usb, connect to the usb serial port of the pico.
+
 When set up correctly, you should see the message "Hello from Zig!" appear every second on the serial port.
