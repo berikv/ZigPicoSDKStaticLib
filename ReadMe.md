@@ -32,14 +32,10 @@ The [pico](pico/) folder contains a minimal [Raspberry Pi Pico SDK](https://gith
 1. Builds the zig standard library:
 
     ```bash
-    zig build-lib src/root.zig \
-                    --name my_module \
-                    -static \
-                    -target thumb-freestanding-eabi \
-                    -mcpu cortex_m0plus
+    zig build -Dtarget=thumb-freestanding-eabi -Dcpu=cortex_m0plus
     ```
 
-2. Links `libmy_module.a` into the Pico firmware
+2. Links `zig-out/lib/libmy_module.a` into the Pico firmware
 3. Saves the firmware in different formats
 
 The application code is in [main.c](pico/src/main.c), which:

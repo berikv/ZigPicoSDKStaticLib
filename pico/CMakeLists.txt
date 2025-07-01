@@ -8,13 +8,12 @@ set(PICO_SDK_FETCH_FROM_GIT on)
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-project(mcui_example)
+project(my_module_example)
 
 # Path to repo root
 set(MY_MODULE_PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}/..")
-# Where to place the built library
-# set(ZIG_OUT_DIR "${MY_MODULE_PROJECT_ROOT}/zig-out/lib")
-set(MY_MODULE_LIB "${MY_MODULE_PROJECT_ROOT}/libmy_module.a")
+set(ZIG_OUT_DIR "${MY_MODULE_PROJECT_ROOT}/zig-out")
+set(MY_MODULE_LIB "${ZIG_OUT_DIR}/lib/libmy_module.a")
 
 
 # initialize the Raspberry Pi Pico SDK
@@ -22,11 +21,7 @@ pico_sdk_init()
 
 add_custom_command(
   OUTPUT ${MY_MODULE_LIB}
-  COMMAND zig build-lib src/root.zig
-                --name my_module
-                -static
-                -target thumb-freestanding-eabi
-                -mcpu cortex_m0plus
+  COMMAND zig build -Dtarget=thumb-freestanding-eabi -Dcpu=cortex_m0plus
   WORKING_DIRECTORY "${MY_MODULE_PROJECT_ROOT}"
   DEPENDS "${MY_MODULE_PROJECT_ROOT}/src/root.zig"
   VERBATIM
