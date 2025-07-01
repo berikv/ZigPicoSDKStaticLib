@@ -15,9 +15,9 @@ pub export fn helloFrom() usize {
 }
 ```
 
-The `pico/` directory contains a bare-bones pico-sdk project, similar to [the hello usb example](https://github.com/raspberrypi/pico-examples/blob/master/hello_world/usb/hello_usb.c). The CMakeLists.txt is set up to call `zig build-lib` on `src/root.zig`, and link the result. `main.c` calls helloFrom() and prints the result to the USB serial port.
+The [pico](pico/) directory contains a bare-bones pico-sdk project, similar to [the hello usb example](https://github.com/raspberrypi/pico-examples/blob/master/hello_world/usb/hello_usb.c). The CMakeLists.txt is set up to call `zig build-lib` on [root.zig](src/root.zig), and link the result. [main.c](pico/src/main.c) calls helloFrom() and prints the result to the USB serial port.
 
-Lastly, `pico/include/my_module.h` contains the C declaration for `helloFrom()`. At this time (Zig 0.14.0) `zig build-lib` seems not able to emit a header file describing the public interface.
+Lastly, [my_module.h](pico/include/my_module.h) contains the C declaration for `helloFrom()`. At this time (Zig 0.14.0) `zig build-lib` seems not able to emit a header file describing the public interface.
 
 ## Compile and link example binary
 
@@ -34,7 +34,7 @@ Those commands will:
 - Compile the pico-sdk project inside the pico/ folder and store results in the pico/build folder
 - Compile the zig static library (src/root.zig)
 - Link the two
-- Emit rp pico compatible binaries in `pico/build/`
+- Emit rp pico compatible binaries in [pico/build/](pico/build/)
 
 ### Flash
 
