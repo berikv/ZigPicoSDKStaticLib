@@ -14,7 +14,7 @@ pub export fn fourtyTwo() u32 {
 $ zig build-lib src/root.zig \
   --name my_module \
   -static \
-  -target thumb-freestanding-none \
+  -target thumb-freestanding-eabi \
   -mcpu cortex_m0plus
 
 $ ls
@@ -28,7 +28,7 @@ $ file libmy_module.a.o
 libmy_module.a.o: ELF 32-bit LSB relocatable, ARM, EABI5 version 1 (SYSV), with debug_info, not stripped
 ```
 
-But the archive looks weird:
+The archive looks weird:
 
 ```bash
 $ ar -t libmy_module.a
@@ -70,3 +70,13 @@ $ arm-none-eabi-nm libmy_module.a.o
 ### Issues
 
 1. No header file was generated
+
+```bash
+$ zig build-lib src/root.zig \
+  --name my_module \
+  -static \
+  -target thumb-freestanding-eabi \
+  -mcpu cortex_m0plus \
+  -femit-h=my_module.h
+# No header file was generated
+```
