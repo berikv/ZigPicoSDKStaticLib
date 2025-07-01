@@ -1,9 +1,11 @@
 
-# A Zig static library for the pico-sdk
+# A Zig static library demo for the Raspberry Pi Pico SDK
+
+A minimal Zig static-library and Pico SDK example showing how to call into Zig from C on a Cortex-M0+ microcontroller.
 
 ## Overview
 
-This repository demonstrates how to compile Zig into a static library, that can be linked by a pico-sdk project.
+This repository demonstrates how to compile Zig into a static library, that can be linked by a Pico SDK project.
 
 The Zig code is minimal:
 
@@ -15,11 +17,39 @@ pub export fn helloFrom() usize {
 }
 ```
 
-The [pico](pico/) directory contains a bare-bones [pico-sdk](https://github.com/raspberrypi/pico-sdk) project, similar to [the hello usb example](https://github.com/raspberrypi/pico-examples/blob/master/hello_world/usb/hello_usb.c). The [CMakeLists.txt](pico/CMakeLists.txt) is set up to call `zig build-lib` on [root.zig](src/root.zig), and link the result. [main.c](pico/src/main.c) calls helloFrom() and prints the result to the USB serial port.
+And C can call it like this:
 
-Lastly, [my_module.h](pico/include/my_module.h) contains the C declaration for `helloFrom()`. At this time (Zig 0.14.0) `zig build-lib` seems not able to emit a header file describing the public interface.
+```c
+// Function declaration, see note below.
+size_t helloFrom(void);
 
-## Compile and link example binary
+char *from = (char *)helloFrom();
+printf("Hello from %s!\n", from);
+```
+
+The [pico](pico/) folder contains a minimal [Raspberry Pi Pico SDK](https://github.com/raspberrypi/pico-sdk) project whose [CMakeLists.txt](pico/CMakeLists.txt) does the following:
+
+1. Builds the zig standard library:
+
+    ```bash
+    zig build-lib src/root.zig \
+                    --name my_module \
+                    -static \
+                    -target thumb-freestanding-eabi \
+                    -mcpu cortex_m0plus
+    ```
+
+2. Links `libmy_module.a` into the Pico firmware
+3. Saves the firmware in different formats
+
+The application code is in [main.c](pico/src/main.c), which:
+
+- Includes [my_module.h](pico/include/my_module.h), which provides the forward declaration for `helloFrom()`.
+- Calls `helloFrom()` and prints the returned string over USB serial.
+
+> **Note:** As of Zig 0.14.0, `zig build-lib` does not generate a C header. You must manually declare the API in a header file such as `pico/include/my_module.h`.
+
+## Quickstart
 
 ### Compile
 
@@ -34,7 +64,7 @@ Those commands will:
 - Compile the pico-sdk project inside the pico/ folder and store results in the pico/build folder
 - Compile the zig static library (src/root.zig)
 - Link the two
-- Emit rp pico compatible binaries in [pico/build/](pico/build/)
+- Save rp pico compatible binary formats (uf2, bin, elf, hex) to [pico/build/](pico/build/)
 
 ### Flash
 
@@ -46,4 +76,7 @@ To flash the binary on a rp pico board:
 
 Now the pico will print the message "Hello from Zig!" on the USB serial port.
 
-Use a serial port tool such as Arduino's serial monitor or VSCode Teleport plugin to see the messages.
+### Monitor
+
+Use a serial port tool such as Arduino's serial monitor or the VSCode Teleport plugin monitor the usb serial port.
+When set up correctly, you should see the message "Hello from Zig!" appear every second on the serial port.
