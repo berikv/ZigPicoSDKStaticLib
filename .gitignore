@@ -1,0 +1,5 @@
+libmy_module.a*
+
+# Zig
+/.zig-cache/
+/zig-out/
